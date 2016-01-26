@@ -1,4 +1,5 @@
-﻿@model webplatform.Models.Forms.Login
+﻿@model webplatform.Models.Forms.NewUser
+
 @{
     Layout = null;
 }
@@ -8,29 +9,31 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>View</title>
+    <title>Ny bruger</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     <div class="container">
         <div class="row">
-            @Html.Partial("_message")
             <div class="col-md-offset-4 col-md-3">
-                @Html.ValidationSummary()
-
-                @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+                
+                @Html.Partial("_message")
+                @using (Html.BeginForm("NewUser", "Login", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
                     <div class="form-group">
                         @Html.LabelFor(m => m.Username)
-                        @Html.TextBoxFor(m => m.Username, new {@class = "form-control", @placeholder = "Brugernavn"})
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = "Brugernavn" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Password)
                         @Html.PasswordFor(m => m.Password, new {@class = "form-control", @placeholder = "Password"})
                     </div>
-                    @Html.ActionLink("Opret ny bruger", "NewUser", new {@Controller = "Login"}, new {@class = "pull-right"})<br/>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.RepeatPassword)
+                        @Html.PasswordFor(m => m.RepeatPassword, new { @class = "form-control", @placeholder = "Password" })
+                    </div>
                     <button type="submit" class="btn btn-default pull-right">Submit</button>
                 }
             </div>

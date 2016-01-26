@@ -1,0 +1,11 @@
+﻿
+@{
+    Layout = null;
+}
+
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["success"]
+    </div>
+}
