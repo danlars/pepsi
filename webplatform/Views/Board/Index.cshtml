@@ -10,48 +10,59 @@
 
 
 <div class="row">
+
     <div class="col-md-12">
-        
         <h2>@ViewBag.Title</h2>
+    </div>
+
+    <div class="col-md-12" id="content">
 
         @foreach (var job in jobs.Where(x => x.board_id == Model.id).OrderBy(x => x.weight_id))
         {
             <ul class="list-group job pull-left borderless">
-                <li class="list-group-item">
+
+                <li class="list-group-item item-header">
                     <h3 class="list-group-item-heading">
                         @job.title
                     </h3>
                 </li>
-                @foreach (var card in cards.Where(x => x.job_id == job.id))
-                {
-                    <li class="list-group-item">
-                        <h5 class="list-group-item-heading">
-                            @card.title
-                        </h5>
-                        <p class="list-group-item-text">
-                            @card.description
-                        </p>
-                    </li>
-                }
+                <div class="list-items">
+                    @foreach (var card in cards.Where(x => x.job_id == job.id))
+                    {
+                        <li class="list-group-item feet">
+                            <h5 class="list-group-item-heading">
+                                @card.title
+                            </h5>
+                            <p class="list-group-item-text">
+                                @card.description
+                            </p>
+                        </li>
+                    }
+                </div>
             </ul>
         }
     </div>
 </div>
 @section scripts
 {
-<script>
-    $(document).ready(function () {
-        $(".list-group").sortable({
-            revert: true
-        });
+    <script>
+        $(document).ready(function() {
 
-        $(".list-group-item").draggable({
-            connectToSortable: ".list-group",
-            revert: "invalid"
-        });
+            $(".list-items").sortable({
+                revert: true
+            });
 
-        $("ul, li").disableSelection();
-    });
-</script>
+            $(".feet").draggable({
+                connectToSortable: ".list-items",
+                revert: "invalid"
+            });
+
+            $("ul, li").disableSelection();
+
+            $(".item-header").mousedown(function () {
+                $("#content").sortable({ revert: true });
+            });
+        });
+    </script>
 }
 

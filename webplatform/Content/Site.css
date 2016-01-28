@@ -37,3 +37,10 @@
     border: none;
     border-top: none !important;
 }
+
+.list-items {
+    display: block;
+    Content: " ";
+    width: 100%;
+    min-height: 40px;
+}
