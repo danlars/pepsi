@@ -22,6 +22,7 @@ namespace webplatform.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["level"] = "success";
                 TempData["success"] = "Du er logget ind";
                 return RedirectToAction("Index", new {@Controller = "Home"});
             }
@@ -41,6 +42,7 @@ namespace webplatform.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["level"] = "success";
                 TempData["success"] = "Din bruger er blevet tilføjet";
                 return RedirectToAction("Index");
             }

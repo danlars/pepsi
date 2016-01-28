@@ -1,0 +1,57 @@
+﻿@using webplatform.Models
+@model Board
+@{
+    ViewBag.Title = String.Format("Opgaver for {0}", Model.name);
+    List<Card> cards = (List<Card>)ViewData["Cards"];
+    List<Job> jobs = (List<Job>)ViewData["Jobs"];
+    int highestCardWeight = cards.OrderByDescending(x => x.weight_id).FirstOrDefault().weight_id;
+    List<int> jobIds = new List<int>();
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        
+        <h2>@ViewBag.Title</h2>
+
+        @foreach (var job in jobs.Where(x => x.board_id == Model.id).OrderBy(x => x.weight_id))
+        {
+            <ul class="list-group job pull-left borderless">
+                <li class="list-group-item">
+                    <h3 class="list-group-item-heading">
+                        @job.title
+                    </h3>
+                </li>
+                @foreach (var card in cards.Where(x => x.job_id == job.id))
+                {
+                    <li class="list-group-item">
+                        <h5 class="list-group-item-heading">
+                            @card.title
+                        </h5>
+                        <p class="list-group-item-text">
+                            @card.description
+                        </p>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+@section scripts
+{
+<script>
+    $(document).ready(function () {
+        $(".list-group").sortable({
+            revert: true
+        });
+
+        $(".list-group-item").draggable({
+            connectToSortable: ".list-group",
+            revert: "invalid"
+        });
+
+        $("ul, li").disableSelection();
+    });
+</script>
+}
+

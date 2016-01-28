@@ -19,6 +19,7 @@
             <div class="col-md-offset-4 col-md-3">
                 
                 @Html.Partial("_message")
+                @Html.ValidationSummary()
                 @using (Html.BeginForm("NewUser", "Login", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()

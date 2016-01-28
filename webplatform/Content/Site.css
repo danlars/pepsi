@@ -16,14 +16,24 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
-}
-
 .validation-summary-errors {
     color: red;
     font-weight: bold;
+}
+
+#banner {
+    background: url("img/logo02.svg");
+    background-size: cover;
+    margin: 10px 0 0 0;
+    height: auto;
+    width: 95px;
+}
+
+.clickable-row:hover {
+    cursor: pointer;
+}
+
+.borderless td, .borderless th, .borderless li{
+    border: none;
+    border-top: none !important;
 }
