@@ -44,3 +44,7 @@
     width: 100%;
     min-height: 40px;
 }
+
+.fixed-width {
+    width: 160px;
+}
