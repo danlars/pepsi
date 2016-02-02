@@ -12,7 +12,9 @@
 
     <div class="col-md-12">
         <h2>@ViewBag.Title</h2>
-        <a id="new-job" href="#">Opret et job</a>
+        @*<a id="new-job" href="#">Opret et job</a>*@
+        <a id="new-job" data-fancybox-type="iframe" href="@Url.Content("~/Form/Card/1")">Opret et job</a>
+
     </div>
 
     <div class="col-md-12" id="content">
@@ -46,7 +48,28 @@
 @section scripts
 {
     <script>
-        $(document).ready(function() {
+        
+        function test(msg) {
+            alert(msg);
+        }
+
+        $(document).ready(function () {
+
+            $("a#new-job").fancybox({
+                fitToView: false,
+                autoSize: false
+            });
+
+            //$("a#new-job").on("click", function (e) {
+            //    e.preventDefault();
+            //    var link = $(this).attr('href');
+            //    var content = $.get(link, function(data) {
+            //        return data;
+            //    });
+
+            //    console.log(content);
+                
+            //});
 
             $(".list-items").sortable({
                 revert: true
@@ -59,12 +82,8 @@
 
             $("ul, li").disableSelection();
 
-            $(".item-header").on("mousedown", function () {
+            $(".item-header").on("mousedown", function() {
                 $("#content").sortable({ revert: true });
-            });
-
-            $("#new-job").on("click", function(e) {
-                    
             });
 
         });

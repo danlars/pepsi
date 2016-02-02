@@ -4,23 +4,37 @@
     Layout = null;
 }
 
-@*<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Cards</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div> 
-    </div>
-</body>
-</html>*@
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Card", "Form", FormMethod.Post))
 {
-    //What repository to set it under
-    @Html.TextBoxFor(x => x.title)
-    @Html.TextAreaFor(x => x.description)
+    <div class="form-group">
+        @Html.LabelFor(x => x.title)
+        @Html.TextBoxFor(x => x.title, new {@class = "form-control"})
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.description)
+        @Html.TextAreaFor(x => x.description, new {@class = "form-control"})
+    </div>
+
     <input type="submit" name="submit" value="SEND" class="btn btn-default"/>
+}
+</body>
+</html>
+
+@if (ViewBag.isPost)
+{
+    <script>
+        //parent.test("what");
+        parent.jQuery.fancybox.close();
+    </script>
 }

@@ -11,18 +11,27 @@ namespace webplatform.Controllers
     {
 
         // GET: Form/Card/{id}
-        [HttpGet]
+        
         public ActionResult Card(int id = 0)
         {
+            ViewBag.isPost = false;
             if (id > 0)
             {
                 TestModelBuilder card = new TestModelBuilder();
-                return View(card.getCards().Where(x => x.id == id));
+                return View(card.getCards().First(x => x.id == id));
             }
             else
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult Card(Card model)
+        {
+            //TODO: check if post is valid 
+            ViewBag.isPost = true;
+            return View(model);
         }
 
         // GET: Form/Job/{id}
