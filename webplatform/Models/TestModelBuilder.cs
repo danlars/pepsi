@@ -36,15 +36,15 @@ namespace webplatform.Models
         {
             List<Card> cards = new List<Card>();
             //Job 1
-            cards.Add(new Card() { id = 1, title = "Card 1", description = "Some description", job_id = 1, weight_id = 1 });
-            cards.Add(new Card() { id = 2, title = "Card 2", description = "Some description", job_id = 1, weight_id = 2 });
+            cards.Add(new Card() { id = 1, title = "Card 1", description = "Some description", job_id = 1, weight_id = 1, color = "536266", date = DateTime.Today});
+            cards.Add(new Card() { id = 2, title = "Card 2", description = "Some description", job_id = 1, weight_id = 2, color = "555555", date = DateTime.Now.AddDays(-1) });
 
             //Job 2
-            cards.Add(new Card() { id = 3, title = "Card 1", description = "Some description", job_id = 2, weight_id = 1 });
-            cards.Add(new Card() { id = 4, title = "Card 2", description = "Some description", job_id = 2, weight_id = 2 });
+            cards.Add(new Card() { id = 3, title = "Card 1", description = "Some description", job_id = 2, weight_id = 1, color = "333333", date = DateTime.Now.AddDays(-2) });
+            cards.Add(new Card() { id = 4, title = "Card 2", description = "Some description", job_id = 2, weight_id = 2, color = "000000", date = DateTime.Today.AddDays(-3) });
 
             //Job 3
-            cards.Add(new Card() { id = 5, title = "Card 1", description = "Some description", job_id = 3, weight_id = 1 });
+            cards.Add(new Card() { id = 5, title = "Card 1", description = "Some description", job_id = 3, weight_id = 1, color = "FFFFFF", date = DateTime.Today.AddDays(-4) });
 
             return cards;
         } 

@@ -8,10 +8,14 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
     <title>Cards</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/colorpicker")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery-colorpicker")
 </head>
 <body>
 
@@ -26,15 +30,43 @@
         @Html.TextAreaFor(x => x.description, new {@class = "form-control"})
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(x => x.color)
+        @Html.TextBoxFor(x => x.color, new {@class = "form-control", @id = "colorpicker"})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.date)
+        @Html.TextBoxFor(x => x.date, new {Value = Model.date.ToString("dd-MM-yyyy"), @Type = "datetime", @class = "form-control", @id = "datepicker"})
+    </div>
+
     <input type="submit" name="submit" value="SEND" class="btn btn-default"/>
 }
 </body>
 </html>
-
 @if (ViewBag.isPost)
 {
-    <script>
-        //parent.test("what");
-        parent.jQuery.fancybox.close();
-    </script>
+<script>
+    //parent.test("what");
+    parent.jQuery.fancybox.close();
+</script>
 }
+<script>
+
+    $('input[type="datetime"]').datepicker({ "dateFormat": "dd-mm-yyyy" });
+    
+    $('#colorpicker').ColorPicker({
+        onSubmit: function (hsb, hex, rgb, el) {
+            $(el).val(hex);
+            $(el).ColorPickerHide();
+        },
+        onBeforeShow: function () {
+            $(this).ColorPickerSetColor(this.value);
+        },
+        onChange: function (hsb, hex, rgb) {
+            $('#colorpicker').val(hex);
+        }
+    }).bind('keyup', function () {
+        $(this).ColorPickerSetColor(this.value);
+    });
+</script>
