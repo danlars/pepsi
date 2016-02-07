@@ -7,15 +7,14 @@ using webplatform.Models;
 
 namespace webplatform.Controllers
 {
-    public class BoardController : Controller
+    public class BoardController : BaseController
     {
-        protected TestModelBuilder builder = new TestModelBuilder();
         // GET: Board
         public ActionResult Index(int id)
         {
-            ViewData["Jobs"] = builder.getJobs();
-            ViewData["Cards"] = builder.getCards();
-            return View(builder.getBoards().Find(x => x.id == id));
+            ViewData["Jobs"] = Context.Jobs();
+            ViewData["Cards"] = Context.Cards();
+            return View(Context.Boards().Find(x => x.id == id));
         }
     }
 }

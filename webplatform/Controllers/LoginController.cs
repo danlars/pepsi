@@ -7,7 +7,7 @@ using webplatform.Models.Forms;
 
 namespace webplatform.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         // GET: Login
         [HttpGet]

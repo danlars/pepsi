@@ -29,32 +29,27 @@
         </div>
 
         <div class="col-md-12">
+            <a id="new-board" data-fancybox-type="iframe" href="@Url.Content("~/Form/Board")">Opret nyt projekt</a>
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th>
+                    <th style="min-width: 130px;">
                         Projekt navn
                     </th>
                     <th>
-                        Sidst opdateret
-                    </th>
-                    <th>
-                        Oprettet
+                        Beskrivelse
                     </th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach (var board in Model)
                 {
-                    <tr class="clickable-row" data-href="@Url.Action("Index", "Board", new { id = board.id})">
+                    <tr class="clickable-row" data-href="@Url.Action("Index", "Board", new {id = board.id})">
                         <td>
-                            @board.name
+                            @board.title
                         </td>
                         <td>
-                            @board.updated_at.ToString("dd-MM-yyyy")
-                        </td>
-                        <td>
-                            @board.created_at.ToString("dd-MM-yyyy")
+                            @board.description
                         </td>
                     </tr>
                 }
@@ -70,6 +65,11 @@
         $(document).ready(function() {
             $(".clickable-row").click(function () {
                 window.document.location = $(this).data("href");
+            });
+
+            $("a#new-board").fancybox({
+                fitToView: false,
+                autoSize: false
             });
         });
     </script>

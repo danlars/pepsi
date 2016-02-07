@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    string dato = (Model != null) ? Model.date.ToString("dd-MM-yyyy") : "";
 }
 
 <!DOCTYPE html>
@@ -37,7 +38,7 @@
 
     <div class="form-group">
         @Html.LabelFor(x => x.date)
-        @Html.TextBoxFor(x => x.date, new {Value = Model.date.ToString("dd-MM-yyyy"), @Type = "datetime", @class = "form-control", @id = "datepicker"})
+        @Html.TextBoxFor(x => x.date, new {Value = dato, @Type = "datetime", @class = "form-control", @id = "datepicker"})
     </div>
 
     <input type="submit" name="submit" value="SEND" class="btn btn-default"/>

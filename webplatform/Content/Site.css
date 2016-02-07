@@ -46,5 +46,11 @@
 }
 
 .fixed-width {
-    width: 160px;
+    width: 200px;
+}
+
+.list-group-item-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

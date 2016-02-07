@@ -8,19 +8,19 @@ using webplatform.Models;
 namespace webplatform.Controllers
 {
     //[Authorize]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        protected TestModelBuilder lists = new TestModelBuilder();
+
         public ActionResult Index()
         {
-            return View(lists.getBoards());
+            return View(Context.Boards());
         }
 
         [HttpPost]
         public ActionResult Index(string search)
         {
             ViewBag.search = search;
-            return View(lists.getBoards().FindAll(x => x.name.ToLower().Contains(search.ToLower())));
+            return View(Context.Boards().FindAll(x => x.title.ToLower().Contains(search.ToLower())));
         }
     }
 }

@@ -7,7 +7,7 @@ using webplatform.Models;
 
 namespace webplatform.Controllers
 {
-    public class FormController : Controller
+    public class FormController : BaseController
     {
 
         // GET: Form/Card/{id}
@@ -17,8 +17,7 @@ namespace webplatform.Controllers
             ViewBag.isPost = false;
             if (id > 0)
             {
-                TestModelBuilder card = new TestModelBuilder();
-                return View(card.getCards().First(x => x.id == id));
+                return View(Context.Cards().First(x => x.id == id));
             }
             else
             {
@@ -39,14 +38,26 @@ namespace webplatform.Controllers
         {
             if (id > 0)
             {
-                TestModelBuilder job = new TestModelBuilder();
-                return View(job.getJobs().Where(x => x.id == id));
+                return View(Context.Jobs().First(x => x.id == id));
             }
             else
             {
                 return View();
             }
             
+        }
+
+        //GET: Form/Board
+        public ActionResult Board(int id = 0)
+        {
+            if (id > 0)
+            {
+                return View(Context.Boards().First(x => x.id == id));
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

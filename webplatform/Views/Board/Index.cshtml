@@ -1,10 +1,9 @@
 ﻿@using webplatform.Models
 @model Board
 @{
-    ViewBag.Title = String.Format("Opgaver for {0}", Model.name);
+    ViewBag.Title = String.Format("Opgaver for {0}", Model.title);
     List<Card> cards = (List<Card>)ViewData["Cards"];
     List<Job> jobs = (List<Job>)ViewData["Jobs"];
-    int highestCardWeight = cards.OrderByDescending(x => x.weight_id).FirstOrDefault().weight_id;
     List<int> jobIds = new List<int>();
 }
 
@@ -19,7 +18,7 @@
 
     <div class="col-md-12" id="content">
 
-        @foreach (var job in jobs.Where(x => x.board_id == Model.id).OrderBy(x => x.weight_id))
+        @foreach (var job in jobs.Where(x => x.BoardId == Model.id).OrderBy(x => x.weight_id))
         {
             <ul class="list-group pull-left borderless fixed-width">
 

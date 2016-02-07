@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -9,10 +10,18 @@ namespace webplatform.Models
     {
         public int id { get; set; }
 
-        public string name { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Projektnavn")]
+        public string title { get; set; }
 
-        public DateTime updated_at { get; set; }
+        [Required]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Beskrivelse")]
+        public string description { get; set; }
 
-        public DateTime created_at { get; set; }
+        //Relations
+        public virtual Team team { get; set; }
+        public virtual ICollection<Job> jobs { get; set; }
     }
 }

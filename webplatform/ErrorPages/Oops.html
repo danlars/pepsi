@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Oops...</title>
+	<meta charset="utf-8" />
+</head>
+<body style="text-align: center;">
+    <h1>Oops! Something terrible happened at the Pepsi factory and we cannot solve it...</h1>
+    <p>
+        If you happen to have a Pepsi at your disposal, please run as far away from it as possible.<br />
+        Pepsi will not be held responsible for any poorly created hoverboards or old fashioned cafeterias
+        <br /><br />
+        Yours sincerely <a href="http://www.pepsi.com/"><i>Pepsi</i></a>
+    </p>
+
+    <span id="countdown"></span>
+
+    <script>
+        var seconds = 10;
+        var timer = setInterval(countdown, 1000);
+        CountDownContent(seconds);
+
+        function countdown() {
+            CountDownContent(seconds = seconds - 1);
+
+            if (seconds == 0) {
+                clearInterval(timer);
+                window.history.back();
+            }
+        }
+
+        function CountDownContent(time) {
+            var txt = "You will be redirected in";
+            var CounterTxt = "<h1>" + time + "</h1>";
+            document.getElementById("countdown").innerHTML = txt + CounterTxt;
+        }
+
+    </script>
+</body>
+</html>
+
