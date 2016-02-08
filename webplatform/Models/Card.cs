@@ -28,7 +28,6 @@ namespace webplatform.Models
         public DateTime date { get; set; }
 
         [Required]
-        //[RegularExpression()]
         [Display(Name = "Farve")]
         public string color { get; set; }
 
@@ -37,7 +36,6 @@ namespace webplatform.Models
 
         public int weight_id { get; set; }
 
-        //Relations
         public virtual Job Job { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿@model webplatform.Models.Job
 @{
     Layout = null;
 }
@@ -8,10 +8,21 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Job</title>
+    <title>New Board</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/colorpicker")
 </head>
 <body>
-    <div> 
-    </div>
+    @using (Html.BeginForm("Job", "Form", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(x => x.title)
+            @Html.TextBoxFor(x => x.title, new { @class = "form-control" })
+        </div>
+
+        <input type="submit" name="submit" value="SEND" class="btn btn-default" />
+    }
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </body>
 </html>

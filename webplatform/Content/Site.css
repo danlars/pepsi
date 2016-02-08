@@ -54,3 +54,34 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.feet {
+    margin-bottom: 1px;
+    box-sizing: border-box;
+    padding: 10px 15px;
+}
+
+.feet:hover {
+    border: 1px solid #000000 !important;
+    padding: 9px 14px;
+}
+
+.feet:hover .editing, .main-body:hover .editing {
+    display: inline-block;
+}
+
+.editing:before {
+    content: "\f040";
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 14px;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: pointer;
+}
+
+.editing, a.editing {
+    display: none;
+    color: #000000;
+    text-decoration:none;
+}

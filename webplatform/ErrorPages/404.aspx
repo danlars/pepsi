@@ -8,7 +8,9 @@
 	<meta charset="utf-8" />
 </head>
 <body style="text-align: center;">
-    <h1>Mr. Fusion does not exist in the future!</h1>
+    <img src="/Content/img/404.png" style="width: 35%; min-width: 300px; margin-top: 100px; display: inline-block"/>
+
+<%--    <h1>Mr. Fusion does not exist in the future!</h1>
     <p>
         Quick! Click the <i>backspace</i> button to go <b><i>Back to the Future</i></b>! Fix everything!
     </p>
@@ -35,6 +37,6 @@
             document.getElementById("countdown").innerHTML = txt + CounterTxt;
         }
 
-    </script>
+    </script>--%>
 </body>
 </html>

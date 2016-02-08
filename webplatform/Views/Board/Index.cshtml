@@ -1,36 +1,33 @@
-﻿@using webplatform.Models
-@model Board
+﻿@model webplatform.Models.Board
 @{
     ViewBag.Title = String.Format("Opgaver for {0}", Model.title);
-    List<Card> cards = (List<Card>)ViewData["Cards"];
-    List<Job> jobs = (List<Job>)ViewData["Jobs"];
-    List<int> jobIds = new List<int>();
 }
 
 <div class="row">
 
     <div class="col-md-12">
         <h2>@ViewBag.Title</h2>
-        @*<a id="new-job" href="#">Opret et job</a>*@
-        <a id="new-job" data-fancybox-type="iframe" href="@Url.Content("~/Form/Card/1")">Opret et job</a>
+        <a id="new-job" data-fancybox-type="iframe" href="@Url.Content("~/Form/Job/")">Opret et job</a>
 
     </div>
 
     <div class="col-md-12" id="content">
 
-        @foreach (var job in jobs.Where(x => x.BoardId == Model.id).OrderBy(x => x.weight_id))
+        @foreach(var job in Model.jobs.OrderBy(x => x.weight_id))
         {
             <ul class="list-group pull-left borderless fixed-width">
 
-                <li class="list-group-item item-header">
+                <li class="list-group-item item-header main-body">
                     <h3 class="list-group-item-heading">
                         @job.title
+                        <div class="editing pull-right"></div>
                     </h3>
                 </li>
                 <div class="list-items">
-                    @foreach (var card in cards.Where(x => x.job_id == job.id))
+                    @foreach(var card in job.Cards)
                     {
                         <li class="list-group-item feet">
+                            <a href="@Url.Content("~/Form/Card/" + card.id)" data-fancybox-type="iframe" class="editing pull-right"></a>
                             <h5 class="list-group-item-heading">
                                 @card.title
                             </h5>
@@ -47,43 +44,47 @@
 @section scripts
 {
     <script>
-        
+
         function test(msg) {
             alert(msg);
         }
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
-            $("a#new-job").fancybox({
+            /*Fancybox*/
+            $("a#new-job, a.editing").fancybox({
                 fitToView: false,
                 autoSize: false
             });
+            /*Fancybox END*/
 
-            //$("a#new-job").on("click", function (e) {
-            //    e.preventDefault();
-            //    var link = $(this).attr('href');
-            //    var content = $.get(link, function(data) {
-            //        return data;
-            //    });
-
-            //    console.log(content);
-                
-            //});
-
+            /*Draggable JQuery UI*/
             $(".list-items").sortable({
                 revert: true
             });
-
+            $("ul, li").disableSelection();
+            $("#content").sortable({ revert: true });
             $(".feet").draggable({
                 connectToSortable: ".list-items",
                 revert: "invalid"
             });
+            /*Draggable JQuery UI END*/
 
-            $("ul, li").disableSelection();
 
-            $(".item-header").on("mousedown", function() {
-                $("#content").sortable({ revert: true });
+            /*JQUERY*/
+            $(document).on("click", ".main-body div.editing", function () {
+                var parent = $(this).parent().parent();
+                var content = $(this).parent();
+                parent.html('<input class="form-control" id="job-header" name="job-header" type="text" value="' + content.text().trim() + '" />');
             });
+
+            $(document).on("keypress", "#job-header", function(e) {
+                if (e.which == 13) {
+                    var parent = $(this).parent();
+                    parent.html('<h3 class="list-group-item-heading">' + $(this).val() + '<div class="editing pull-right"></div></h3>');
+                }
+            });
+            /*JQUERY END*/
 
         });
     </script>

@@ -11,10 +11,8 @@ namespace webplatform.Controllers
     {
         // GET: Board
         public ActionResult Index(int id)
-        {
-            ViewData["Jobs"] = Context.Jobs();
-            ViewData["Cards"] = Context.Cards();
-            return View(Context.Boards().Find(x => x.id == id));
+        {   
+            return View(Context.Boards().First(x => x.id == id));
         }
     }
 }
