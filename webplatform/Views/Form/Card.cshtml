@@ -2,7 +2,7 @@
 
 @{
     Layout = null;
-    string dato = (Model != null) ? Model.date.ToString("dd-MM-yyyy") : "";
+    string dato = (Model != null) ? Model.date.ToString("dd/MM/yyyy") : "";
 }
 
 <!DOCTYPE html>
@@ -13,38 +13,72 @@
     <title>Cards</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/colorpicker")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery-colorpicker")
 </head>
 <body>
-
-@using (Html.BeginForm("Card", "Form", FormMethod.Post))
-{
+    @using (Html.BeginForm("Card", "Form", FormMethod.Post))
+    {
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(x => x.title)
+                @Html.TextBoxFor(x => x.title, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.description)
+                @Html.TextAreaFor(x => x.description, new {@class = "form-control", @rows = "4", @placeholder = "Beskrivelse..."})
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-6">
+                @Html.LabelFor(x => x.color)
+                @Html.TextBoxFor(x => x.color, new { @class = "form-control", @id = "colorpicker" })
+            </div>
+            <div class="col-xs-6">
+                @Html.LabelFor(x => x.date)
+                @Html.TextBoxFor(x => x.date, new { Value = dato, @Type = "datetime", @class = "form-control", @id = "datepicker" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div style="width: 100%; overflow: hidden; display: block; padding-top: 15px;" class="form-group">
+                <input type="submit" name="submit" value="SEND" class="btn btn-default pull-right" />
+            </div>
+        </div>
+    }
+<div class="col-md-12">
     <div class="form-group">
-        @Html.LabelFor(x => x.title)
-        @Html.TextBoxFor(x => x.title, new {@class = "form-control"})
+        @Html.Label("Kommentar", new {@For = "comment"})
+        @Html.TextArea("comment", new {@class = "form-control", @rows = "4", @placeholder = "Kommentarer..."})
     </div>
     <div class="form-group">
-        @Html.LabelFor(x => x.description)
-        @Html.TextAreaFor(x => x.description, new {@class = "form-control"})
+        <input type="submit" name="submit" value="SEND" class="btn btn-default pull-right"/>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.color)
-        @Html.TextBoxFor(x => x.color, new {@class = "form-control", @id = "colorpicker"})
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.date)
-        @Html.TextBoxFor(x => x.date, new {Value = dato, @Type = "datetime", @class = "form-control", @id = "datepicker"})
-    </div>
-
-    <input type="submit" name="submit" value="SEND" class="btn btn-default"/>
-}
+</div>
+<br/>
+<h3 style="cursor: pointer;" data-toggle="collapse" data-target="#toggle-comments">
+    Vis kommentarer..
+</h3>
+<div id="toggle-comments" class="collapse">
+    @for (int i = 0; i < 10; i++)
+    {
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>myusername</strong> <span class="text-muted">commented 5 days ago</span>
+                </div>
+                <div class="panel-body">
+                    Panel content
+                </div>
+            </div>
+        </div>
+    }
+</div>
 </body>
 </html>
+
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/jquery-colorpicker")
+
 @if (ViewBag.isPost)
 {
 <script>
@@ -54,7 +88,10 @@
 }
 <script>
 
-    $('input[type="datetime"]').datepicker({ "dateFormat": "dd-mm-yyyy" });
+    $('input[type="datetime"]').datepicker({
+        "dateFormat": "dd/mm/yy",
+        orientation: "bottom left"
+    });
     
     $('#colorpicker').ColorPicker({
         onSubmit: function (hsb, hex, rgb, el) {

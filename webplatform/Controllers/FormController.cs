@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http.Controllers;
 using System.Web.Mvc;
 using webplatform.Models;
 
@@ -10,11 +11,14 @@ namespace webplatform.Controllers
     public class FormController : BaseController
     {
 
-        // GET: Form/Card/{id}
-        
-        public ActionResult Card(int id = 0)
+        public FormController()
         {
             ViewBag.isPost = false;
+        }
+
+        // GET: Form/Card/{id}
+        public ActionResult Card(int id = 0)
+        {
             if (id > 0)
             {
                 return View(Context.Cards().First(x => x.id == id));
@@ -47,7 +51,7 @@ namespace webplatform.Controllers
             
         }
 
-        //GET: Form/Board
+        //GET: Form/Board/{id}
         public ActionResult Board(int id = 0)
         {
             if (id > 0)
@@ -58,6 +62,19 @@ namespace webplatform.Controllers
             {
                 return View();
             }
+        }
+
+        //POST: Form/Board
+        [HttpPost]
+        public ActionResult Board(Board model)
+        {
+            if (ModelState.IsValid){
+                ViewBag.isPost = true;
+                model.id = Context.Boards().OrderByDescending(x => x.id).First().id + 1;
+                Context.Boards().Add(model);
+            }
+
+            return View(model);
         }
     }
 }

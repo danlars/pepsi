@@ -13,7 +13,7 @@ namespace webplatform.Models
 
         [Required]
         [DataType(DataType.Text)]
-        [Display(Name = "Process")]
+        [Display(Name = "Job")]
         public string title { get; set; }
 
         [ForeignKey("Board")]

@@ -9,10 +9,11 @@ namespace webplatform.Controllers
 {
     public class BaseController : Controller
     {
+
         protected APIContext Context = new APIContext();
+
         public BaseController()
         {
-            
         }
     }
 }

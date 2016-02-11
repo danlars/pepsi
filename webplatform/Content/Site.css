@@ -66,8 +66,8 @@
     padding: 9px 14px;
 }
 
-.feet:hover .editing, .main-body:hover .editing {
-    display: inline-block;
+.feet:hover .editing, .main-body:hover .editing, td:hover .editing {
+    display: block;
 }
 
 .editing:before {
@@ -84,4 +84,5 @@
     display: none;
     color: #000000;
     text-decoration:none;
+    z-index: 100;
 }

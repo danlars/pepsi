@@ -13,22 +13,40 @@
     @Styles.Render("~/Content/colorpicker")
 </head>
 <body>
+
+    @Html.ValidationSummary()
+
 @using (Html.BeginForm("Board", "Form", FormMethod.Post))
 {
+
     <div class="form-group">
         @Html.LabelFor(x => x.title)
-        @Html.TextBoxFor(x => x.title, new { @class = "form-control" })
+        @Html.TextBoxFor(x => x.title, new {@class = "form-control"})
     </div>
     <div class="form-group">
         @Html.LabelFor(x => x.description)
-        @Html.TextAreaFor(x => x.description, new { @class = "form-control" })
+        @Html.TextAreaFor(x => x.description, new {@class = "form-control"})
     </div>
 
-    <input type="submit" name="submit" value="SEND" class="btn btn-default" />
+    <input type="submit" name="submit" value="SEND" class="btn btn-default"/>
 }
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery-colorpicker")
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+@if (ViewContext.RouteData.Values["id"] != null && ViewBag.isPost)
+{
+    <script>
+        @*parent.UpdateBoard({ id: @Model.id, title: "@Model.title", description: '@Model.description.Trim()' });*@
+        parent.jQuery.fancybox.close();
+    </script>
+}
+else if (ViewBag.isPost)
+{
+    <script>
+        @*parent.AddBoard({ id: @Model.id, title: "@Model.title", description: '@Model.description.Replace(System.Environment.NewLine, " <br/>")' });*@
+        parent.jQuery.fancybox.close();
+    </script>
+}
 </body>
 </html>

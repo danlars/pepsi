@@ -53,8 +53,8 @@
 
             /*Fancybox*/
             $("a#new-job, a.editing").fancybox({
-                fitToView: false,
-                autoSize: false
+                fitToView: true,
+                autoSize: true
             });
             /*Fancybox END*/
 
@@ -76,6 +76,7 @@
                 var parent = $(this).parent().parent();
                 var content = $(this).parent();
                 parent.html('<input class="form-control" id="job-header" name="job-header" type="text" value="' + content.text().trim() + '" />');
+                parent.children("input").focus();
             });
 
             $(document).on("keypress", "#job-header", function(e) {
@@ -83,6 +84,11 @@
                     var parent = $(this).parent();
                     parent.html('<h3 class="list-group-item-heading">' + $(this).val() + '<div class="editing pull-right"></div></h3>');
                 }
+            });
+
+            $(document).on("focusout", "#job-header", function (e) {
+                var parent = $(this).parent();
+                parent.html('<h3 class="list-group-item-heading">' + $(this).val() + '<div class="editing pull-right"></div></h3>');
             });
             /*JQUERY END*/
 
