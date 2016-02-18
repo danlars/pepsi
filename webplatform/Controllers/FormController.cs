@@ -16,17 +16,15 @@ namespace webplatform.Controllers
             ViewBag.isPost = false;
         }
 
-        // GET: Form/Card/{id}
-        public ActionResult Card(int id = 0)
+        public ActionResult Card()
         {
-            if (id > 0)
-            {
-                return View(Context.Cards().First(x => x.id == id));
-            }
-            else
-            {
-                return View();
-            }
+            return View();
+        }
+
+        // GET: Form/Card/{id}
+        public ActionResult Card(Guid id)
+        {
+            return View(Context.FindCard(id));
         }
 
         [HttpPost]
@@ -37,31 +35,27 @@ namespace webplatform.Controllers
             return View(model);
         }
 
-        // GET: Form/Job/{id}
-        public ActionResult Job(int id = 0)
+        // GET: Form/Job/
+        public ActionResult Job()
         {
-            if (id > 0)
-            {
-                return View(Context.Jobs().First(x => x.id == id));
-            }
-            else
-            {
-                return View();
-            }
-            
+            return View();
+        }
+
+        // GET: Form/Job/{id}
+        public ActionResult Job(Guid id)
+        {
+            return View(Context.FindJob(id));
+        }
+
+        public ActionResult Board()
+        {
+            return View();
         }
 
         //GET: Form/Board/{id}
-        public ActionResult Board(int id = 0)
+        public ActionResult Board(Guid id)
         {
-            if (id > 0)
-            {
-                return View(Context.Boards().First(x => x.id == id));
-            }
-            else
-            {
-                return View();
-            }
+            return View(Context.Boards().First(x => x.id == id));
         }
 
         //POST: Form/Board
@@ -70,10 +64,31 @@ namespace webplatform.Controllers
         {
             if (ModelState.IsValid){
                 ViewBag.isPost = true;
-                model.id = Context.Boards().OrderByDescending(x => x.id).First().id + 1;
+                //model.id = Context.Boards().OrderByDescending(x => x.id).First().id + 1;
+
                 Context.Boards().Add(model);
             }
 
+            return View(model);
+        }
+
+        //GET: Form/AddCard
+        public ActionResult AddCard(Guid id)
+        {
+            ViewData["jobs"] = Context.Jobs(id).ToList();
+            return View();
+        }
+
+        //GET: Form/AddCard
+        [HttpPost]
+        public ActionResult AddCard(Guid id, Card model)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewBag.isPost = true;
+            }
+
+            ViewData["jobs"] = Context.Jobs(id);
             return View(model);
         }
     }

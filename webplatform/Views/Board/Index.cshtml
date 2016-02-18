@@ -7,7 +7,8 @@
 
     <div class="col-md-12">
         <h2>@ViewBag.Title</h2>
-        <a id="new-job" data-fancybox-type="iframe" href="@Url.Content("~/Form/Job/")">Opret et job</a>
+        <a id="new-job" data-fancybox-type="iframe" href="@Url.Content("~/Form/Job/")">Opret et job</a> |
+        <a id="new-card" data-fancybox-type="iframe" href="@Url.Content("~/Form/AddCard/")@ViewContext.RouteData.Values["id"]">Opret et Card</a>
 
     </div>
 
@@ -15,7 +16,7 @@
 
         @foreach(var job in Model.jobs.OrderBy(x => x.weight_id))
         {
-            <ul class="list-group pull-left borderless fixed-width">
+            <ul class="list-group pull-left borderless fixed-width" data-id="@job.id">
 
                 <li class="list-group-item item-header main-body">
                     <h3 class="list-group-item-heading">
@@ -44,7 +45,6 @@
 @section scripts
 {
     <script>
-
         function test(msg) {
             alert(msg);
         }
@@ -52,7 +52,7 @@
         $(document).ready(function() {
 
             /*Fancybox*/
-            $("a#new-job, a.editing").fancybox({
+            $("a#new-job, a.editing, a#new-card").fancybox({
                 fitToView: true,
                 autoSize: true
             });
@@ -68,11 +68,19 @@
                 connectToSortable: ".list-items",
                 revert: "invalid"
             });
+
+            $(document).on("mouseup", ".feet", function() {
+                //Ajax request to update which job and weight we have been placed in.
+            });
+
+            $(document).on("mouseup", ".list-items", function () {
+                //Ajax request to update which job and weight we have been placed in.
+            });
+
             /*Draggable JQuery UI END*/
 
-
             /*JQUERY*/
-            $(document).on("click", ".main-body div.editing", function () {
+            $(document).on("click", ".main-body div.editing", function() {
                 var parent = $(this).parent().parent();
                 var content = $(this).parent();
                 parent.html('<input class="form-control" id="job-header" name="job-header" type="text" value="' + content.text().trim() + '" />');
@@ -86,7 +94,7 @@
                 }
             });
 
-            $(document).on("focusout", "#job-header", function (e) {
+            $(document).on("focusout", "#job-header", function(e) {
                 var parent = $(this).parent();
                 parent.html('<h3 class="list-group-item-heading">' + $(this).val() + '<div class="editing pull-right"></div></h3>');
             });

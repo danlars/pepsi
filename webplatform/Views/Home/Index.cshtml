@@ -35,30 +35,13 @@
         function Board() {
             $.ajax({
                 type: "POST",
-                url: "@Url.Content("~/Iframe/Index")",
+                url: "@Url.Content("~/Iframe/Board")",
                 data: { search: $("#search").val() },
                 success: function (data) {
                     $("#get-board").html(data);
                 }
-            });    
-        }
-
-        @*function Board() {
-            $.get("@Url.Content("~/Iframe/Index")", function(data) {
-                $("#get-board").html(data);
             });
-        }*@
-
-        //function AddBoard(input) {
-        //    var NewContent = '<tr class="clickable-row" data-href="/Board/Index/' + input.id + '">' + TableRowTemplate(input) + '</tr>';
-        //    $(NewContent).appendTo("table tbody");
-        //}
-
-        //function UpdateBoard(input) {
-        //    var UpdatedContent = TableRowTemplate(input);
-        //    var row = $("table tbody tr").eq(SelectedRow);
-        //    row.html(UpdatedContent);
-        //}
+        }
 
         function TableRowTemplate(input) {
             var content = '<td>' + input.title + '</td><td>' + input.description + '<a href="@Url.Content("~/Form/Board/")' + input.id + '" data-fancybox-type="iframe" class="editing pull-right"></a></td>';

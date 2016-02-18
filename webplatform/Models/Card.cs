@@ -10,7 +10,7 @@ namespace webplatform.Models
 {
     public class Card
     {
-        public int id { get; set; } 
+        public Guid id { get; set; } 
 
         [Required]
         [DataType(DataType.Text)]
@@ -32,7 +32,8 @@ namespace webplatform.Models
         public string color { get; set; }
 
         [ForeignKey("Job")]
-        public int job_id { get; set; }
+        [Display(Name="Jobs")]
+        public Guid job_id { get; set; }
 
         public int weight_id { get; set; }
 

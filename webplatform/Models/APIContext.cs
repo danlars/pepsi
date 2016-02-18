@@ -2,71 +2,150 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace webplatform.Models
 {
     public class APIContext
     {
-        private string _description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis lectus quis sem lacinia nonummy. Proin mollis lorem non dolor. In hac habitasse platea dictumst. ";
         public List<Board> Boards()
         {
             List<Board> boards = new List<Board>();
-            boards.Add(new Board() { id = 1, title = "Kanbas", description = _description });
-            boards.Add(new Board() { id = 2, title = "Test", description = _description });
-            boards.Add(new Board() { id = 3, title = "Projekt", description = _description });
 
-            foreach (var board in boards)
+            Task.Run(async () =>
             {
-                board.jobs = Jobs().Where(x => x.BoardId == board.id).ToList();
-            }
+                try
+                {
+                    foreach (var board in await project_flux.API.Board.GetAvailableBoards())
+                    {
+                        boards.Add(new Board()
+                        {
+                            title = board.Name,
+                            description = "",
+                            id = board.Id,
+                            teamId = board.TeamId,
+                            jobs = Jobs(board.Id)
+                        });
+                    }
+                }
+                catch { }
+            }).Wait();
 
             return boards;
         }
 
-        public List<Job> Jobs()
+        public Board FindBoard(Guid BoardId)
+        {
+            Board board = new Board();
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var IBoard = await project_flux.API.Board.GetBoardByID(BoardId);
+                    board.title = IBoard.Name;
+                    board.description = "";
+                    board.id = IBoard.Id;
+                    board.teamId = IBoard.TeamId;
+                    board.jobs = Jobs(IBoard.Id);
+                }
+                catch { }
+            }).Wait();
+            return board;
+        }
+
+        public List<Job> Jobs(Guid BoardId)
         {
             List<Job> jobs = new List<Job>();
-            //Board 1
-            jobs.Add(new Job() { id = 1, title = "Job titel", BoardId = 1, weight_id =  1 });
-            jobs.Add(new Job() { id = 2, title = "Job titel2", BoardId = 1, weight_id = 2 });
-            jobs.Add(new Job() { id = 3, title = "Job titel3", BoardId = 1, weight_id = 3 });
-
-            //Board2
-            jobs.Add(new Job() { id = 4, title = "Job titel 1", BoardId = 2, weight_id = 1 });
-            jobs.Add(new Job() { id = 5, title = "Job title 2", BoardId = 2, weight_id = 2 });
-            jobs.Add(new Job() { id = 6, title = "Job title 3", BoardId = 2, weight_id = 3 });
-
-            foreach (var job in jobs)
+            Task.Run(async () =>
             {
-                //job.Board = Boards().First(x => x.id == job.BoardId);
-                job.Cards = Cards().Where(x => x.job_id == job.id).ToList();
-            }
+                try
+                {
+                    foreach (var job in await project_flux.API.Job.GetJobsByBoardId(BoardId))
+                    {
+                        jobs.Add(new Job()
+                        {
+                            id = job.Id,
+                            BoardId = BoardId,
+                            title = job.Name,
+                            Cards = Cards(job.Id)
+                        });
+                    }
+                }
+                catch { }
+            }).Wait();
 
             return jobs;
         }
 
-        public List<Card> Cards()
+        public Job FindJob(Guid JobId)
+        {
+            var job = new Job();
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var iJob = await project_flux.API.Job.GetJobByID(JobId);
+                    job.id = iJob.Id;
+                    job.BoardId = iJob.BoardId;
+                    job.title = iJob.Name;
+                    job.Cards = Cards(iJob.Id);
+                }
+                catch { }
+            }).Wait();
+
+            return job;
+        }
+
+        public List<Card> Cards(Guid JobId)
         {
             List<Card> cards = new List<Card>();
-            //Job 1
-            cards.Add(new Card() { id = 1, title = "Card 1", description = _description, job_id = 1, weight_id = 1, color = "536266", date = DateTime.Today });
-            cards.Add(new Card() { id = 2, title = "Card 2", description = _description, job_id = 1, weight_id = 2, color = "555555", date = DateTime.Now.AddDays(-1) });
 
-            //Job 2
-            cards.Add(new Card() { id = 3, title = "Card 1", description = _description, job_id = 2, weight_id = 1, color = "333333", date = DateTime.Now.AddDays(-2) });
-            cards.Add(new Card() { id = 4, title = "Card 2", description = _description, job_id = 2, weight_id = 2, color = "000000", date = DateTime.Today.AddDays(-3) });
-
-            //Job 3
-            cards.Add(new Card() { id = 5,title = "Card 1", description = _description, job_id = 3, weight_id = 1, color = "FFFFFF", date = DateTime.Today.AddDays(-4) });
-
-            //foreach (var card in cards)
-            //{
-            //    card.Job = Jobs().First(x => x.id == card.job_id);
-            //}
+            Task.Run(async () =>
+            {
+                try
+                {
+                    foreach (var card in await project_flux.API.Card.GetCardsByJobId(JobId))
+                    {
+                        cards.Add(new Card()
+                        {
+                            id = card.Id,
+                            job_id = JobId,
+                            color = card.Color,
+                            date = card.DueDate,
+                            description = card.Description,
+                            title = card.Name,
+                            weight_id = card.Weight
+                        });
+                    }
+                }
+                catch { }
+            }).Wait();
 
             return cards;
-        } 
+        }
+
+        public Card FindCard(Guid CardId)
+        {
+            Card card = new Card();
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        var iCard = await project_flux.API.Card.GetCardByID(CardId);
+                        card.id = iCard.Id;
+                        card.color = iCard.Color;
+                        card.date = iCard.DueDate;
+                        card.title = iCard.Name;
+                        card.description = iCard.Description;
+                        card.job_id = iCard.JobId;
+                        card.weight_id = iCard.Weight;
+                    }
+                    catch { }
+                }).Wait();
+
+            return card;
+        }
              
     }
 }

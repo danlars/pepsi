@@ -8,7 +8,7 @@ namespace webplatform.Models
 {
     public class Team
     {
-        public int id { get; set; }
+        public Guid id { get; set; }
 
         [Required]
         [DataType(DataType.Text)]

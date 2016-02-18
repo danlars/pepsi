@@ -10,7 +10,7 @@ namespace webplatform.Controllers
     public class BoardController : BaseController
     {
         // GET: Board
-        public ActionResult Index(int id)
+        public ActionResult Index(Guid id)
         {   
             return View(Context.Boards().First(x => x.id == id));
         }

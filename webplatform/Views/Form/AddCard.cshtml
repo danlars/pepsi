@@ -1,0 +1,101 @@
+﻿@using webplatform.Models;
+@model Card
+@{
+    Layout = null;
+    List<Job> jobs = (List<Job>) ViewData["jobs"];
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>New Board</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/colorpicker")
+</head>
+<body>
+
+    @Html.ValidationSummary()
+
+
+    @using (Html.BeginForm("AddCard", "Form", FormMethod.Post))
+    {
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(x => x.title)
+                @Html.TextBoxFor(x => x.title, new {@class = "form-control"})
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.description)
+                @Html.TextAreaFor(x => x.description, new {@class = "form-control", @rows = "4", @placeholder = "Beskrivelse..."})
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.job_id)
+                @Html.DropDownListFor(x => x.job_id, new SelectList(jobs, "id", "title"), new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group" style="width: 48%;">
+                <div class="col-sm-12">
+                    @Html.LabelFor(x => x.color)
+                    @Html.TextBoxFor(x => x.color, new { @class = "form-control", @id = "colorpicker" })
+                </div>
+            </div>
+
+            <div class="form-group" style="width: 48%;">
+                <div class="col-sm-12">
+                    @Html.LabelFor(x => x.date)
+                    @Html.TextBoxFor(x => x.date, new {@Type = "datetime", @class = "form-control", @id = "datepicker" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div style="width: 100%; overflow: hidden; display: block; padding-top: 10px;" class="form-group">
+                <input type="submit" name="submit" value="SEND" class="btn btn-default pull-right" />
+            </div>
+        </div>
+    }
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery-colorpicker")
+
+    @if (ViewBag.isPost)
+    {
+        <script>
+        @*parent.AddBoard({ id: @Model.id, title: "@Model.title", description: '@Model.description.Replace(System.Environment.NewLine, " <br/>")' });*@
+        parent.jQuery.fancybox.close();
+        </script>
+    }
+
+    <script>
+
+    $('input[type="datetime"]').datepicker({
+        "dateFormat": "dd/mm/yy",
+        orientation: "top left"
+    });
+
+    $('#colorpicker').ColorPicker({
+        onSubmit: function (hsb, hex, rgb, el) {
+            $(el).val(hex);
+            $(el).ColorPickerHide();
+        },
+        onBeforeShow: function () {
+            $(this).ColorPickerSetColor(this.value);
+        },
+        onChange: function (hsb, hex, rgb) {
+            $('#colorpicker').val(hex);
+        }
+    }).bind('keyup', function () {
+        $(this).ColorPickerSetColor(this.value);
+    });
+    </script>
+
+</body>
+</html>

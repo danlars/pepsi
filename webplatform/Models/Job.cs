@@ -9,7 +9,7 @@ namespace webplatform.Models
 {
     public class Job
     {
-        public int id { get; set; }
+        public Guid id { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
@@ -17,7 +17,7 @@ namespace webplatform.Models
         public string title { get; set; }
 
         [ForeignKey("Board")]
-        public int BoardId { get; set; }
+        public Guid BoardId { get; set; }
 
         public int weight_id { get; set; }
 
