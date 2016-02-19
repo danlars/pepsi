@@ -16,57 +16,102 @@ namespace webplatform.Controllers
             ViewBag.isPost = false;
         }
 
-        public ActionResult Card()
-        {
-            return View();
-        }
-
         // GET: Form/Card/{id}
         public ActionResult Card(Guid id)
         {
-            return View(Context.FindCard(id));
-        }
-
-        [HttpPost]
-        public ActionResult Card(Card model)
-        {
-            //TODO: check if post is valid 
-            ViewBag.isPost = true;
+            var model = Context.FindCard(id);
+            ViewData["jobs"] = Context.Jobs(Context.FindJob(model.job_id).BoardId);
             return View(model);
         }
 
-        // GET: Form/Job/
-        public ActionResult Job()
+        [HttpPost]
+        public ActionResult Card(Guid id, Card model)
         {
-            return View();
+            model.id = id;
+            if (ModelState.IsValid && Context.UpdateCard(model))
+            {
+                ViewBag.isPost = true;
+            }
+            ViewData["jobs"] = Context.Jobs(Context.FindJob(model.job_id).BoardId);
+            return View(model);
+        }
+
+        // GET: Form/AddJob
+        public ActionResult AddJob(Guid id)
+        {
+            ViewBag.action = "AddJob";
+            return View("Job");
+        }
+
+        // POST: Form/AddJob
+        [HttpPost]
+        public ActionResult AddJob(Guid id, Job model)
+        {
+            ViewBag.action = "AddJob";
+            model.BoardId = id;
+            if (ModelState.IsValid && Context.AddJob(model))
+            {
+                ViewBag.isPost = true;
+            }
+
+            return View("Job", model);
         }
 
         // GET: Form/Job/{id}
         public ActionResult Job(Guid id)
         {
+            ViewBag.action = "Job";
             return View(Context.FindJob(id));
         }
 
-        public ActionResult Board()
+        // GET: Form/Job/{id}
+        [HttpPost]
+        public ActionResult Job(Guid id, Job model)
         {
-            return View();
+            ViewBag.action = "Job";
+            model.id = id;
+            if (ModelState.IsValid && Context.UpdateJob(model))
+            {
+                ViewBag.isPost = true;
+            }
+            return View(Context.FindJob(id));
+        }
+
+        //GET: Form/Board
+        public ActionResult AddBoard()
+        {
+            ViewBag.action = "AddBoard";
+            return View("Board");
         }
 
         //GET: Form/Board/{id}
         public ActionResult Board(Guid id)
         {
-            return View(Context.Boards().First(x => x.id == id));
+            ViewBag.action = "Board";
+            return View(Context.FindBoard(id));
         }
 
         //POST: Form/Board
         [HttpPost]
-        public ActionResult Board(Board model)
+        public ActionResult AddBoard(Board model)
         {
-            if (ModelState.IsValid){
+            ViewBag.action = "AddBoard";
+            if (ModelState.IsValid && Context.AddBoard(model)){
                 ViewBag.isPost = true;
-                //model.id = Context.Boards().OrderByDescending(x => x.id).First().id + 1;
+            }
 
-                Context.Boards().Add(model);
+            return View("Board", model);
+        }
+
+        //POST: Form/Board/{id}
+        [HttpPost]
+        public ActionResult Board(Guid id, Board model)
+        {
+            ViewBag.action = "Board";
+            model.id = id;
+            if (ModelState.IsValid && Context.UpdateBoard(model))
+            {
+                ViewBag.isPost = true;
             }
 
             return View(model);
@@ -75,7 +120,7 @@ namespace webplatform.Controllers
         //GET: Form/AddCard
         public ActionResult AddCard(Guid id)
         {
-            ViewData["jobs"] = Context.Jobs(id).ToList();
+            ViewData["jobs"] = Context.Jobs(id);
             return View();
         }
 
@@ -83,7 +128,7 @@ namespace webplatform.Controllers
         [HttpPost]
         public ActionResult AddCard(Guid id, Card model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && Context.AddCard(model))
             {
                 ViewBag.isPost = true;
             }

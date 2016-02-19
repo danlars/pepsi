@@ -77,20 +77,20 @@
     <script>
 
     $('input[type="datetime"]').datepicker({
-        "dateFormat": "dd/mm/yy",
+        format: 'dd-mm-yyyy',
         orientation: "top left"
     });
 
     $('#colorpicker').ColorPicker({
         onSubmit: function (hsb, hex, rgb, el) {
-            $(el).val(hex);
+            $(el).val('#' + hex);
             $(el).ColorPickerHide();
         },
         onBeforeShow: function () {
             $(this).ColorPickerSetColor(this.value);
         },
         onChange: function (hsb, hex, rgb) {
-            $('#colorpicker').val(hex);
+            $('#colorpicker').val('#' + hex);
         }
     }).bind('keyup', function () {
         $(this).ColorPickerSetColor(this.value);

@@ -16,7 +16,7 @@
 
     @Html.ValidationSummary()
 
-@using (Html.BeginForm("Board", "Form", FormMethod.Post))
+@using (Html.BeginForm((string)ViewBag.action, "Form", FormMethod.Post))
 {
 
     <div class="form-group">
@@ -34,17 +34,9 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 
-@if (ViewContext.RouteData.Values["id"] != null && ViewBag.isPost)
+@if (ViewBag.isPost)
 {
     <script>
-        @*parent.UpdateBoard({ id: @Model.id, title: "@Model.title", description: '@Model.description.Trim()' });*@
-        parent.jQuery.fancybox.close();
-    </script>
-}
-else if (ViewBag.isPost)
-{
-    <script>
-        @*parent.AddBoard({ id: @Model.id, title: "@Model.title", description: '@Model.description.Replace(System.Environment.NewLine, " <br/>")' });*@
         parent.jQuery.fancybox.close();
     </script>
 }

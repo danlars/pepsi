@@ -12,7 +12,7 @@ namespace webplatform.Controllers
         // GET: Board
         public ActionResult Index(Guid id)
         {   
-            return View(Context.Boards().First(x => x.id == id));
+            return View();
         }
     }
 }

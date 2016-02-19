@@ -1,46 +1,4 @@
-﻿@model webplatform.Models.Board
-@{
-    ViewBag.Title = String.Format("Opgaver for {0}", Model.title);
-}
-
-<div class="row">
-
-    <div class="col-md-12">
-        <h2>@ViewBag.Title</h2>
-        <a id="new-job" data-fancybox-type="iframe" href="@Url.Content("~/Form/Job/")">Opret et job</a> |
-        <a id="new-card" data-fancybox-type="iframe" href="@Url.Content("~/Form/AddCard/")@ViewContext.RouteData.Values["id"]">Opret et Card</a>
-
-    </div>
-
-    <div class="col-md-12" id="content">
-
-        @foreach(var job in Model.jobs.OrderBy(x => x.weight_id))
-        {
-            <ul class="list-group pull-left borderless fixed-width" data-id="@job.id">
-
-                <li class="list-group-item item-header main-body">
-                    <h3 class="list-group-item-heading">
-                        @job.title
-                        <div class="editing pull-right"></div>
-                    </h3>
-                </li>
-                <div class="list-items">
-                    @foreach(var card in job.Cards)
-                    {
-                        <li class="list-group-item feet">
-                            <a href="@Url.Content("~/Form/Card/" + card.id)" data-fancybox-type="iframe" class="editing pull-right"></a>
-                            <h5 class="list-group-item-heading">
-                                @card.title
-                            </h5>
-                            <p class="list-group-item-text">
-                                @card.description
-                            </p>
-                        </li>
-                    }
-                </div>
-            </ul>
-        }
-    </div>
+﻿<div class="row" id="BoardContent">
 </div>
 @section scripts
 {
@@ -49,11 +7,37 @@
             alert(msg);
         }
 
+        var timer = setInterval(Board, 1500);
+        Board();
+
+        function Board() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Content("~/Iframe/JobBoard/")@ViewContext.RouteData.Values["id"]",
+                success: function(data) {
+                    $("#BoardContent").html(data);
+                }
+            });
+        }
+
+        $(document).on("click", ".delete", function (e) {
+
+            e.stopPropagation();
+            e.preventDefault();
+            var con = confirm("Skal vi slette " + $(this).attr("type") + " " + $(this).attr("text") + "?");
+            if (con) {
+                $.ajax({
+                    type: "DELETE",
+                    url: $(this).attr("href")
+                });
+            }
+        });
+
         $(document).ready(function() {
 
             /*Fancybox*/
             $("a#new-job, a.editing, a#new-card").fancybox({
-                fitToView: true,
+                fitToView: false,
                 autoSize: true
             });
             /*Fancybox END*/
@@ -80,24 +64,36 @@
             /*Draggable JQuery UI END*/
 
             /*JQUERY*/
-            $(document).on("click", ".main-body div.editing", function() {
+            @*$(document).on("click", ".main-body div.editing", function() {
                 var parent = $(this).parent().parent();
                 var content = $(this).parent();
-                parent.html('<input class="form-control" id="job-header" name="job-header" type="text" value="' + content.text().trim() + '" />');
+                var hidden = '<input type="hidden" class="form-control" name="hiddenId" value="' + content.attr("data-id") + '"/>';
+                parent.html('<input class="form-control" id="job-header" name="job-header" type="text" value="' + content.text().trim() + '" />' + hidden);
                 parent.children("input").focus();
             });
 
             $(document).on("keypress", "#job-header", function(e) {
                 if (e.which == 13) {
                     var parent = $(this).parent();
-                    parent.html('<h3 class="list-group-item-heading">' + $(this).val() + '<div class="editing pull-right"></div></h3>');
+                    editJobTitle(parent, $(this).val());
                 }
             });
 
             $(document).on("focusout", "#job-header", function(e) {
                 var parent = $(this).parent();
-                parent.html('<h3 class="list-group-item-heading">' + $(this).val() + '<div class="editing pull-right"></div></h3>');
+                editJobTitle(parent, $(this).val());
             });
+
+            function editJobTitle(parent, value) {
+                $.ajax({
+                    type: "PUT",
+                    url: "@Url.Content("~/api/Database/editJobTitle")",
+                    data: { id: parent.children("input[type='hidden']").val(), BoardId: "@ViewContext.RouteData.Values["id"]", title: "value" },
+                success: function(data) {
+                    parent.html('<h3 class="list-group-item-heading">' + value + '<div class="editing pull-right"></div></h3>');
+                }
+            });
+            }*@
             /*JQUERY END*/
 
         });

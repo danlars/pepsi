@@ -22,7 +22,14 @@ namespace webplatform.Models
         public string description { get; set; }
 
         [ForeignKey("Team")]
-        public Guid teamId { get; set; }
+        public Guid teamId
+        {
+            get
+            {
+                return new Guid("23c0cca6-cfd8-11e5-950b-93db59257701");
+            }
+        }
+
         //Relations
         public virtual Team team { get; set; }
         public virtual ICollection<Job> jobs { get; set; }

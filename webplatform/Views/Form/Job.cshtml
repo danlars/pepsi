@@ -13,7 +13,7 @@
     @Styles.Render("~/Content/colorpicker")
 </head>
 <body>
-    @using (Html.BeginForm("Job", "Form", FormMethod.Post))
+    @using (Html.BeginForm((string)ViewBag.action, "Form", FormMethod.Post))
     {
         <div class="form-group">
             @Html.LabelFor(x => x.title)

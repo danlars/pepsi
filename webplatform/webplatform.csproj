@@ -426,6 +426,7 @@
     <Content Include="Views\Form\Board.cshtml" />
     <Content Include="Views\Iframe\Board.cshtml" />
     <Content Include="Views\Form\AddCard.cshtml" />
+    <Content Include="Views\Iframe\JobBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

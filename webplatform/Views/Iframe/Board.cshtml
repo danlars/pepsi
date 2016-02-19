@@ -23,6 +23,7 @@
                 </td>
                 <td>
                     <a title="Rediger" href="@Url.Content("~/Form/Board/" + board.id)" data-fancybox-type="iframe" class="editing pull-right"></a>
+                    <a title="Extermination of boards" href="@Url.Content("~/api/Database/DeleteBoard/" + board.id)" class="delete pull-right"></a>
                     @board.description
                 </td>
             </tr>

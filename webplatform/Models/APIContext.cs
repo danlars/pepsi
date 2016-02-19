@@ -24,7 +24,6 @@ namespace webplatform.Models
                             title = board.Name,
                             description = "",
                             id = board.Id,
-                            teamId = board.TeamId,
                             jobs = Jobs(board.Id)
                         });
                     }
@@ -46,12 +45,84 @@ namespace webplatform.Models
                     board.title = IBoard.Name;
                     board.description = "";
                     board.id = IBoard.Id;
-                    board.teamId = IBoard.TeamId;
+                    //board.teamId = IBoard.TeamId;
                     board.jobs = Jobs(IBoard.Id);
                 }
                 catch { }
             }).Wait();
             return board;
+        }
+
+        public bool AddBoard(Board model)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Board.Add(model.teamId, model.title);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+
+            return false;
+        }
+
+        public bool UpdateBoard(Board model)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Board.Update(model.id, model.title);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+
+            return false;
+        }
+
+        public bool ArchiveBoard(Guid BoardId)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Board.Archive(BoardId);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+
+            return false;
+        }
+
+        public bool DeleteBoard(Guid BoardId)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    //await project_flux.API.Board.Delete(BoardId);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+
+            return false;
         }
 
         public List<Job> Jobs(Guid BoardId)
@@ -97,14 +168,83 @@ namespace webplatform.Models
             return job;
         }
 
-        public List<Card> Cards(Guid JobId)
+        public bool AddJob(Job model)
         {
-            List<Card> cards = new List<Card>();
-
             Task.Run(async () =>
             {
                 try
                 {
+                    await project_flux.API.Job.Add(model.BoardId, model.title);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+
+            return false;
+        }
+
+        public bool UpdateJob(Job model)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Job.Update(model.id, model.BoardId, model.title); 
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+            return false;
+        }
+
+        public bool ArchiveJob(Guid JobId)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Board.Archive(JobId);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+            return false;
+        }
+
+        public bool DeleteJob(Guid JobId)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    //await project_flux.API.Job.Delete(JobId);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+            return false;
+        }
+
+        public List<Card> Cards(Guid JobId)
+        {
+            List<Card> cards = new List<Card>();
+            int count = 0;
+
+            Task.Run(async () =>
+            {
+
                     foreach (var card in await project_flux.API.Card.GetCardsByJobId(JobId))
                     {
                         cards.Add(new Card()
@@ -117,9 +257,9 @@ namespace webplatform.Models
                             title = card.Name,
                             weight_id = card.Weight
                         });
+                        count += 1;
                     }
-                }
-                catch { }
+
             }).Wait();
 
             return cards;
@@ -146,6 +286,73 @@ namespace webplatform.Models
 
             return card;
         }
-             
+
+        public bool AddCard(Card model)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Card.Add(model.job_id, model.title, model.description, model.weight_id, model.date, model.color);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+            return false;
+        }
+
+        public bool UpdateCard(Card model)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Card.Update(model.id, model.job_id, model.title, model.description, model.weight_id, model.date, model.color);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+            return false;
+        }
+
+        public bool ArchiveCard(Guid CardId)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await project_flux.API.Card.Archive(CardId);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+            return false;
+        }
+
+        public bool DeleteCard(Guid CardId)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    //await project_flux.API.Card.Delete(CardId);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }).Wait();
+            return false;
+        }
     }
 }

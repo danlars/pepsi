@@ -35,7 +35,7 @@ namespace webplatform.Models
         [Display(Name="Jobs")]
         public Guid job_id { get; set; }
 
-        public int weight_id { get; set; }
+        public short weight_id { get; set; }
 
         public virtual Job Job { get; set; }
     }

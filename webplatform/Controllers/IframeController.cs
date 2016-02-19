@@ -19,5 +19,10 @@ namespace webplatform.Controllers
         {
             return View(Context.Boards().FindAll(x => x.title.ToLower().Contains(search.ToLower())));
         }
+
+        public ActionResult JobBoard(Guid id)
+        {
+            return View(Context.FindBoard(id));
+        }
     }
 }

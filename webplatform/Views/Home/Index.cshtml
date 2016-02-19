@@ -19,7 +19,7 @@
         </div>
 
         <div class="col-md-12">
-            <a id="new-board" data-fancybox-type="iframe" href="@Url.Content("~/Form/Board")">Opret nyt projekt</a>
+            <a id="new-board" data-fancybox-type="iframe" href="@Url.Content("~/Form/AddBoard")">Opret nyt projekt</a>
             <div id="hidden-content"></div>
             <div id="get-board"></div>
         </div>
@@ -29,7 +29,7 @@
 {
     <script>
         var SelectedRow = 0;
-        var timer = setInterval(Board, 2000);
+        var timer = setInterval(Board, 1500);
         Board();
 
         function Board() {
@@ -37,7 +37,7 @@
                 type: "POST",
                 url: "@Url.Content("~/Iframe/Board")",
                 data: { search: $("#search").val() },
-                success: function (data) {
+                success: function(data) {
                     $("#get-board").html(data);
                 }
             });
@@ -50,11 +50,23 @@
 
         //jQuery fnidder
 
+        $(document).on("click", ".delete", function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var con = confirm("Skal vi slette boardet " + $(this).parent().parent().children("td:first").text().trim() + "?");
+            if (con) {
+                $.ajax({
+                    type: "DELETE",
+                    url: $(this).attr("href")
+                });
+            }
+        });
+
         $(document).on("click", ".clickable-row", function() {
             window.document.location = $(this).data("href");
         });
 
-        $(document).on("click", 'tr.clickable-row a.editing', function (e) {
+        $(document).on("click", 'tr.clickable-row a.editing', function(e) {
 
             SelectedRow = $(this).parent().parent().index();
 

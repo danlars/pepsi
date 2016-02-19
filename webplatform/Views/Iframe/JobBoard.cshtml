@@ -1,0 +1,48 @@
+﻿@model webplatform.Models.Board
+@{
+    Layout = null;
+    ViewBag.Title = String.Format("Opgaver for {0}", Model.title);
+}
+
+<div class="col-md-12">
+    <h2>@ViewBag.Title</h2>
+    <a id="new-job" data-fancybox-type="iframe" href="@Url.Content("~/Form/AddJob/")@ViewContext.RouteData.Values["id"]">Opret et job</a> |
+    <a id="new-card" data-fancybox-type="iframe" href="@Url.Content("~/Form/AddCard/")@ViewContext.RouteData.Values["id"]">Opret et Card</a>
+
+</div>
+
+<div class="col-md-12" id="content">
+    @if (Model.jobs.Count > 0  && !String.IsNullOrEmpty(Model.jobs.First().title))
+    {
+        foreach (var job in Model.jobs.OrderBy(x => x.weight_id))
+        {
+            <ul class="list-group pull-left borderless fixed-width" data-id="@job.id">
+
+                <li class="list-group-item item-header main-body">
+                    <h3 class="list-group-item-heading">
+                        @job.title
+
+                        <a data-fancybox-type="iframe" href="@Url.Content("~/Form/Job/" + @job.id)" class="editing pull-right"></a>
+                        <a type="Job" text="@job.title" href="@Url.Content("~/api/Database/DeleteJob/" + job.id)" class="delete pull-right"></a>
+                    </h3>
+                </li>
+                <div class="list-items">
+                    @foreach (var card in job.Cards)
+                    {
+                        <li class="list-group-item feet" style="border-color: @card.color;">
+                            <a href="@Url.Content("~/Form/Card/" + card.id)" data-fancybox-type="iframe" class="editing pull-right"></a>
+                            <a class="delete pull-right" text="@card.title" type="Card" href="@Url.Content("~/api/Database/DeleteCard/" + card.id)"></a>
+
+                            <h5 class="list-group-item-heading">
+                                @card.title
+                            </h5>
+                            <p class="list-group-item-text">
+                                @card.description
+                            </p>
+                        </li>
+                    }
+                </div>
+            </ul>
+        }
+    }
+</div>
